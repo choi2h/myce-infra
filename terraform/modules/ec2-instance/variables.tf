@@ -8,7 +8,7 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "name" {
+variable "name_prefix" {
   type = string
 }
 
@@ -16,15 +16,10 @@ variable "key_pair_id" {
   type = string
 }
 
-variable "subnet_id" {
-  type = string
+variable "subnet_ids" {
+  type = map(string)
 }
 
 variable "security_goups" {
-  type = list(string)
-}
-
-variable "use_public_ip" {
-  type = bool
-  default = true
+  type = map(list(string))
 }

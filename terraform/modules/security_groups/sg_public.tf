@@ -1,6 +1,6 @@
 # 보안그룹 생성
 resource "aws_security_group" "myce_sg_public" {
-    name = "myce_sg_public"
+    name = "${var.name_prefix}-sg-public"
     vpc_id = var.vpc_id
 }
 
