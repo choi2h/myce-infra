@@ -1,6 +1,7 @@
 locals {
     default_keypair_id = aws_key_pair.myce_keypair.id
     project_name = "myce-terra"
+    azs = ["ap-northeast-2a", "ap-northeast-2c"]
 }
 
 # vpc & subnet 생성
@@ -11,21 +12,21 @@ module "myce_vpc" {
     public_subnets = {
         public-1: {
             cidr = "10.0.10.0/24",
-            availability_zone = "ap-northeast-2a"
+            availability_zone = local.azs[0]
         },
         public-2: {
             cidr = "10.0.20.0/24"
-            availability_zone = "ap-northeast-2c"
+            availability_zone = local.azs[1]
         }
     }
     private_subnets = {
         private-1: {
             cidr = "10.0.11.0/24",
-            availability_zone = "ap-northeast-2a"
+            availability_zone = local.azs[0]
         },
         private-2: {
             cidr = "10.0.22.0/24"
-            availability_zone = "ap-northeast-2c"
+            availability_zone = local.azs[1]
         }
     }
     route_cidr = "0.0.0.0/0"
@@ -39,7 +40,7 @@ module "sg_groups" {
 }
 
 # EC2 생성
-module "myce_public_instance" {
+module "myce_ec2" {
     source = "./modules/ec2-instance"
     key_pair_id = local.default_keypair_id
     subnet_ids = {
@@ -55,4 +56,17 @@ module "myce_public_instance" {
         bastion: [ module.sg_groups.bastion_sg_id ]
     } 
     name_prefix = local.project_name
+}
+
+# RDS 생성
+module "myce_rds" {
+    source = "./modules/rds"
+    name_prefix = local.project_name
+    db_name = "myce_db"
+    subnets = [
+        for key, value in module.myce_vpc.private_subnet_ids:
+            value
+    ]
+    security_groups = [module.sg_groups.db_sg_id]
+    availability_zone = local.azs[0]
 }
