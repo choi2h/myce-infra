@@ -2,8 +2,8 @@ variable "name_prefix" {
     type = string
 }
 
-variable "db_name" {
-    type = string
+variable "db_info" {
+    type = map(string)
 }
 
 variable "subnets" {

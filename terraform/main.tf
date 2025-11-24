@@ -62,7 +62,11 @@ module "myce_ec2" {
 module "myce_rds" {
     source = "./modules/rds"
     name_prefix = local.project_name
-    db_name = "myce_db"
+    db_info = {
+        db_name: var.db_name
+        db_username: var.db_username
+        db_password: var.db_password
+    }
     subnets = [
         for key, value in module.myce_vpc.private_subnet_ids:
             value
