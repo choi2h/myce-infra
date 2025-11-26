@@ -1,4 +1,9 @@
 *.pub
+*.pem
+
+.env
+*.env
+env.yml
 
 .terraform
 .terraform.lock.hcl
