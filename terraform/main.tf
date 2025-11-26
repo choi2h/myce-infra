@@ -55,6 +55,7 @@ module "myce_ec2" {
         nat: [ module.sg_groups.nat_sg_id ],
         bastion: [ module.sg_groups.bastion_sg_id ]
     } 
+    private_rt_id = module.myce_vpc.private_route_table_id
     name_prefix = local.project_name
 }
 

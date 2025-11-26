@@ -23,3 +23,7 @@ variable "subnet_ids" {
 variable "security_goups" {
   type = map(list(string))
 }
+
+variable "private_rt_id" {
+  type = string
+}

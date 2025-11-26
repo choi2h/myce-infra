@@ -15,3 +15,7 @@ output "private_subnet_ids" {
             key => value.id
     }
 }
+
+output "private_route_table_id" {
+    value = aws_route_table.private-rt.id
+}

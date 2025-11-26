@@ -16,7 +16,15 @@ resource "aws_instance" "nat_instance" {
     subnet_id = var.subnet_ids.nat
     vpc_security_group_ids = var.security_goups.nat
     associate_public_ip_address = true
+    source_dest_check = false
     tags = { Name = "${var.name_prefix}-nat" } 
+}
+
+# nat routing table설정
+resource "aws_route" "private_route_to_nat" {
+    route_table_id = var.private_rt_id
+    destination_cidr_block = "0.0.0.0/0"
+    network_interface_id = aws_instance.nat_instance.primary_network_interface_id
 }
 
 resource "aws_instance" "bastion_instance" {
