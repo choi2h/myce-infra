@@ -17,3 +17,15 @@ variable "env_export_path" {
 variable "private_key_name" {
     type = string
 }
+
+variable "aws_region" {
+    type = string
+}
+
+variable "state_s3_name" {
+    type = string
+}
+
+variable "state_dynamodb_name" {
+    type = string
+}
