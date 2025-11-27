@@ -1,5 +1,4 @@
 locals {
-    default_keypair_id = aws_key_pair.myce_keypair.id
     project_name = "myce-terra"
     azs = ["ap-northeast-2a", "ap-northeast-2c"]
 }
@@ -42,7 +41,7 @@ module "sg_groups" {
 # EC2 생성
 module "myce_ec2" {
     source = "./modules/ec2-instance"
-    key_pair_id = local.default_keypair_id
+    key_pair_name = var.private_key_name
     subnet_ids = {
         public: module.myce_vpc.public_subnet_ids["public-1"],
         private: module.myce_vpc.private_subnet_ids["private-1"], 
@@ -74,4 +73,13 @@ module "myce_rds" {
     ]
     security_groups = [module.sg_groups.db_sg_id]
     availability_zone = local.azs[0]
+}
+
+module "export_ips_yml" {
+    source = "./modules/export-file"
+    public_ip = module.myce_ec2.public_ip
+    nat_ip = module.myce_ec2.nat_ip
+    bastion_ip = module.myce_ec2.bastion_ip
+    private_ip = module.myce_ec2.private_ip
+    export_path = var.env_export_path
 }

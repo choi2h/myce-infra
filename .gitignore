@@ -4,6 +4,7 @@
 .env
 *.env
 env.yml
+*.env.yml
 
 .terraform
 .terraform.lock.hcl

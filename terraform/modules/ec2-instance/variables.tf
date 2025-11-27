@@ -12,7 +12,7 @@ variable "name_prefix" {
   type = string
 }
 
-variable "key_pair_id" {
+variable "key_pair_name" {
   type = string
 }
 
