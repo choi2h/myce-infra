@@ -108,11 +108,11 @@ jobs:
       - name: Create env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          echo "SSH_KEY_PATH=\"${{ secrets.SSH_PATH }}\"" >> ${{ env.ENV_FILE }}
-          echo "IMAGE_NAME=\"${{ secrets.DOCKER_IMAGE_NAME }}\"" >> ${{ env.ENV_FILE }}
-          echo "APP_PORT=\"${{ vars.APP_PORT }}\"" >> ${{ env.ENV_FILE }}
-          echo "DOCKER_USERNAME=\"${{ vars.DOCKER_USERNAME }}\"" >> ${{ env.ENV_FILE }}
-          echo "DOCKER_PASSWORD=\"${{ secrets.DOCKER_PASSWORD }}\"" >> ${{ env.ENV_FILE }}
+          echo "\"SSH_KEY_PATH\"=\"${{ env.WORKING_DIRECTORY }}/${{ secrets.SSH_KEY_NAME }}\"" >> ${{ env.ENV_FILE }}
+          echo "\"IMAGE_NAME\"=\"${{ secrets.DOCKER_IMAGE_NAME }}\"" >> ${{ env.ENV_FILE }}
+          echo "\"APP_PORT\"=\"${{ vars.APP_PORT }}\"" >> ${{ env.ENV_FILE }}
+          echo "\"DOCKER_USERNAME\"=\"${{ vars.DOCKER_USERNAME }}\"" >> ${{ env.ENV_FILE }}
+          echo "\"DOCKER_PASSWORD\"=\"${{ secrets.DOCKER_PASSWORD }}\"" >> ${{ env.ENV_FILE }}
 
           echo "===== env file ====="
           cat ${{ env.ENV_FILE }}
