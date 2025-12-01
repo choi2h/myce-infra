@@ -29,6 +29,7 @@ jobs:
           echo "${{ env.TERRAFORM_BACKEND_HCL }}" > ${{ env.BACKEND_ENV_FILE }}
           cat ${{ env.BACKEND_ENV_FILE }}
 
+
       - name: Configure AWS Credentials for Terraform
         uses: aws-actions/configure-aws-credentials@v1
         with:
