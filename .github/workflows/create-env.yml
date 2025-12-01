@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ansible-env
-          path: terraform/ansible-env.yml
+          path: ${{ env.WORKING_DIRECTORY }}/ansible-env.yml
 
   ansible:
     name: ansible
