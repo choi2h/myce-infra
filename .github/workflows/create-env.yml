@@ -109,7 +109,7 @@ jobs:
       - name: Create extra env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          cat <<EOF > ${{ EXTRA_ENV_FILE }}
+          cat <<EOF > ${{ env.EXTRA_ENV_FILE }}
           SSH_KEY_PATH: "${{ env.WORKING_DIRECTORY }}/${{ secrets.SSH_KEY_NAME }}"
           IMAGE_NAME: "${{ secrets.DOCKER_IMAGE_NAME }}"
           APP_PORT: "${{ vars.APP_PORT }}"
