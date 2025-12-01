@@ -21,14 +21,11 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           echo "${{ secrets.TERRAFORM_ENV }}" > ${{ env.TFVARS_FILE }}
-          cat ${{ env.TFVARS_FILE }}
       
       - name: Create backend env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: | 
           echo "${{ env.TERRAFORM_BACKEND_HCL }}" > ${{ env.BACKEND_ENV_FILE }}
-          cat ${{ env.BACKEND_ENV_FILE }}
-
 
       - name: Configure AWS Credentials for Terraform
         uses: aws-actions/configure-aws-credentials@v1
