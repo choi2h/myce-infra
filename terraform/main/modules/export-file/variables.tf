@@ -1,19 +1,19 @@
 variable "public_ip" {
-    type = string
+  type = string
 }
 
 variable "nat_ip" {
-    type = string
+  type = string
 }
 
 variable "bastion_ip" {
-    type = string
+  type = string
 }
 
 variable "private_ip" {
-    type = string
+  type = string
 }
 
 variable "export_path" {
-    type = string
+  type = string
 }

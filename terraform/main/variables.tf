@@ -1,23 +1,23 @@
 variable "db_username" {
-    type = string
+  type = string
 }
 
 variable "db_password" {
-    type = string
+  type = string
 }
 
 variable "db_name" {
-    type = string
+  type = string
 }
 
 variable "env_export_path" {
-    type = string
+  type = string
 }
 
 variable "private_key_name" {
-    type = string
+  type = string
 }
 
 variable "aws_region" {
-    type = string
+  type = string
 }

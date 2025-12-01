@@ -1,19 +1,19 @@
 variable "name_prefix" {
-    type = string
+  type = string
 }
 
 variable "db_info" {
-    type = map(string)
+  type = map(string)
 }
 
 variable "subnets" {
-    type = list(string)
+  type = list(string)
 }
 
 variable "security_groups" {
-    type = list(string)
+  type = list(string)
 }
 
 variable "availability_zone" {
-    type = string
+  type = string
 }
