@@ -20,7 +20,10 @@ jobs:
       - name: Create tfvars file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          printf '%s\n' "${{ secrets.TERRAFORM_ENV }}" > ${{ env.TFVARS_FILE }}
+          cat <<EOF > ${{ env.TFVARS_FILE }}
+          ${{ secrets.TERRAFORM_ENV }}
+          EOF
+          
           echo "===== Generated tfvars ====="
           cat ${{ env.TFVARS_FILE }}
 
@@ -30,7 +33,7 @@ jobs:
           cat <<EOF > ${{ env.BACKEND_ENV_FILE }}
           ${{ secrets.TERRAFORM_BACKEND_HCL }}
           EOF
-          
+
           echo "===== backend.hcl ====="
           cat ${{ env.BACKEND_ENV_FILE }}
 
