@@ -1,4 +1,8 @@
-name: Terraform CI/CD
+name: Terraform and Ansible CI/CD
+
+concurrency:
+  group: terraform-main
+  cancel-in-progress: true
 
 on:
   push:
