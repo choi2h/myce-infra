@@ -87,7 +87,8 @@ jobs:
     needs: terraform
     env:
       WORKING_DIRECTORY: ./ansible
-      ENV_FILE: ansible-env.yml
+      IPS_ENV_FILE: ansible-env.yml
+      EXTRA_ENV_FILE: extra-env.yml
 
     steps:
       - name: Checkout
@@ -105,17 +106,19 @@ jobs:
           name: ansible-env
           path: ${{ env.WORKING_DIRECTORY }}
 
-      - name: Create env file
+      - name: Create extra env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          echo "\"SSH_KEY_PATH\":\"${{ env.WORKING_DIRECTORY }}/${{ secrets.SSH_KEY_NAME }}\"" >> ${{ env.ENV_FILE }}
-          echo "\"IMAGE_NAME\":\"${{ secrets.DOCKER_IMAGE_NAME }}\"" >> ${{ env.ENV_FILE }}
-          echo "\"APP_PORT\":\"${{ vars.APP_PORT }}\"" >> ${{ env.ENV_FILE }}
-          echo "\"DOCKER_USERNAME\":\"${{ vars.DOCKER_USERNAME }}\"" >> ${{ env.ENV_FILE }}
-          echo "\"DOCKER_PASSWORD\":\"${{ secrets.DOCKER_PASSWORD }}\"" >> ${{ env.ENV_FILE }}
+          cat <<EOF > ${{ EXTRA_ENV_FILE }}
+          SSH_KEY_PATH: "${{ env.WORKING_DIRECTORY }}/${{ secrets.SSH_KEY_NAME }}"
+          IMAGE_NAME: "${{ secrets.DOCKER_IMAGE_NAME }}"
+          APP_PORT: "${{ vars.APP_PORT }}"
+          DOCKER_USERNAME: "${{ vars.DOCKER_USERNAME }}"
+          DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
+          EOF
 
-          echo "===== env file ====="
-          cat ${{ env.ENV_FILE }}
+          echo "===== extra-env.yml ====="
+          cat extra-env.yml
       
       - name: Install ansible
         shell: bash
@@ -126,4 +129,6 @@ jobs:
       - name: Run Ansible Playbook
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          ansible-playbook env-main.yml --extra-vars "@${{ env.ENV_FILE }}"
+          ansible-playbook env-main.yml \
+          --extra-vars "@${{ env.IPS_ENV_FILE }} \
+          --extra-vars "@${{ env.EXTRA_ENV_FILE }}"
