@@ -130,5 +130,5 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           ansible-playbook env-main.yml \
-          --extra-vars "@${{ env.IPS_ENV_FILE }} \
+          --extra-vars "@${{ env.IPS_ENV_FILE }}" \
           --extra-vars "@${{ env.EXTRA_ENV_FILE }}"
