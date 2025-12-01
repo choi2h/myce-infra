@@ -80,6 +80,7 @@ jobs:
   ansible:
     name: ansible
     runs-on: ubuntu-latest
+    needs: terraform
     env:
       WORKING_DIRECTORY: ./ansible
       ENV_FILE: env.yml
