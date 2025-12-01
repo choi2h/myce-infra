@@ -21,11 +21,3 @@ variable "private_key_name" {
 variable "aws_region" {
     type = string
 }
-
-variable "state_s3_name" {
-    type = string
-}
-
-variable "state_dynamodb_name" {
-    type = string
-}
