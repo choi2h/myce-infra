@@ -20,12 +20,16 @@ jobs:
       - name: Create tfvars file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          echo "${{ secrets.TERRAFORM_ENV }}" > ${{ env.TFVARS_FILE }}
-      
+          printf '%s\n' "${{ secrets.TERRAFORM_ENV }}" > ${{ env.TFVARS_FILE }}
+          echo "===== Generated tfvars ====="
+          cat ${{ env.TFVARS_FILE }}
+
       - name: Create backend env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: | 
-          echo "${{ vars.TERRAFORM_BACKEND_HCL }}" > ${{ env.BACKEND_ENV_FILE }}
+        run: |
+          printf '%s\n' "${{ secrets.TERRAFORM_BACKEND_HCL }}" > ${{ env.BACKEND_ENV_FILE }}
+          echo "===== Generated backend.hcl ====="
+          cat ${{ env.BACKEND_ENV_FILE }}
 
       - name: Configure AWS Credentials for Terraform
         uses: aws-actions/configure-aws-credentials@v1
