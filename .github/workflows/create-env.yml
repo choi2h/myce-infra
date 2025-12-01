@@ -11,7 +11,7 @@ jobs:
     env:
       WORKING_DIRECTORY: ./terraform/main
       TFVARS_FILE: terraform.auto.tfvars
-      BACKEND_ENV_FILE: backend.env.hcl
+      BACKEND_ENV_FILE: backend.hcl
 
     steps:
       - name: Checkout
@@ -22,10 +22,10 @@ jobs:
         run: |
           echo "${{ secrets.TERRAFORM_ENV }}" > ${{ env.TFVARS_FILE }}
       
-      - name: Create backend.env.hcl file
+      - name: Create backend env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: | 
-          echo "${{ env.TERRAFORM_BACKEND_HCL }}" > backend.env.hcl
+          echo "${{ env.TERRAFORM_BACKEND_HCL }}" > ${{ env.BACKEND_ENV_FILE }}
 
       - name: Configure AWS Credentials for Terraform
         uses: aws-actions/configure-aws-credentials@v1
