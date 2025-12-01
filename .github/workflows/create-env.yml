@@ -27,8 +27,11 @@ jobs:
       - name: Create backend env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          printf '%s\n' "${{ secrets.TERRAFORM_BACKEND_HCL }}" > ${{ env.BACKEND_ENV_FILE }}
-          echo "===== Generated backend.hcl ====="
+          cat <<EOF > ${{ env.BACKEND_ENV_FILE }}
+          ${{ secrets.TERRAFORM_BACKEND_HCL }}
+          EOF
+          
+          echo "===== backend.hcl ====="
           cat ${{ env.BACKEND_ENV_FILE }}
 
       - name: Configure AWS Credentials for Terraform
