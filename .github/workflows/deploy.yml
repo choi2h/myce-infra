@@ -6,7 +6,7 @@ concurrency:
 
 on:
   repository_dispatch:
-    types: [ deploy-myce ]
+    types: [deploy-myce]
 
 jobs:
   deploy:
