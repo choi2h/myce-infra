@@ -81,7 +81,6 @@ module "export_ips_yml" {
   nat_ip      = module.myce_ec2.nat_ip
   bastion_ip  = module.myce_ec2.bastion_ip
   private_ip  = module.myce_ec2.private_ip
-  export_path = var.env_export_path
   artifact_bucket = var.artifact_bucket
   artifact_export_path = var.artifact_export_path
 }

@@ -14,10 +14,6 @@ variable "private_ip" {
   type = string
 }
 
-variable "export_path" {
-  type = string
-}
-
 variable "artifact_bucket" {
   type = string
 }
