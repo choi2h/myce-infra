@@ -14,24 +14,30 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WORKING_DIRECTORY: ./ansible
-      IPS_ENV_FILE: ansible-env.yml
+      IPS_ENV_FILE: dev-env.yml
       EXTRA_ENV_FILE: extra-env.yml
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-    
+
+      - name: Configure AWS Credentials for Terraform
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}  
+
+      - name: Download dev env file from s3
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          aws s3 cp s3://${{ vars.AWS_S3_ARTIFACT_BUCKET_NAME }}/${{ vars.AWS_S3_MYCE_ARTIFACT_PATH }} ./${{ env.IPS_ENV_FILE }}
+   
       - name: Set up ssh
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           echo "${{ secrets.AWS_PEM_FILE }}" > ${{ secrets.SSH_KEY_NAME }}
           chmod 400 ${{ secrets.SSH_KEY_NAME }}
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ansible-env
-          path: ${{ env.WORKING_DIRECTORY }}
 
       - name: Create exra-env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
