@@ -17,3 +17,11 @@ variable "private_ip" {
 variable "export_path" {
   type = string
 }
+
+variable "artifact_bucket" {
+  type = string
+}
+
+variable "artifact_export_path" {
+  type = string
+}

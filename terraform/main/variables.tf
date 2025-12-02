@@ -21,3 +21,11 @@ variable "private_key_name" {
 variable "aws_region" {
   type = string
 }
+
+variable "artifact_bucket" {
+  type = string
+}
+
+variable "artifact_export_path" {
+  type = string
+}
