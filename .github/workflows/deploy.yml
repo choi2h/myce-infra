@@ -1,0 +1,65 @@
+name: Deploy all modules
+
+concurrency:
+  group: terraform-main
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [ deploy ]
+
+jobs:
+  deploy:
+    name: Deploy myce backend
+    runs-on: ubuntu-latest
+    env:
+      WORKING_DIRECTORY: ./ansible
+      IPS_ENV_FILE: ansible-env.yml
+      EXTRA_ENV_FILE: extra-env.yml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+    
+      - name: Set up ssh
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          echo "${{ secrets.AWS_PEM_FILE }}" > ${{ secrets.SSH_KEY_NAME }}
+          chmod 400 ${{ secrets.SSH_KEY_NAME }}
+
+      - name: Download artifact
+          uses: actions/download-artifact@v4
+          with:
+            name: ansible-env
+            path: ${{ env.WORKING_DIRECTORY }}
+
+      - name: Create exra-env file
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+          run: |
+            cat <<EOF > "${{ env.EXTRA_ENV_FILE }}"
+            SSH_KEY_PATH: './${{ secrets.SSH_KEY_NAME }}'
+            IMAGE_NAME: '${{ secrets.DOCKER_IMAGE_NAME }}'
+            APP_PORT: '${{ vars.APP_PORT }}'
+            DOCKER_USERNAME: '${{ vars.DOCKER_USERNAME }}'
+            DOCKER_PASSWORD: '${{ secrets.DOCKER_PASSWORD }}'
+            EOF
+
+            echo "===== ${{ env.EXTRA_ENV_FILE }} ====="
+            cat "${{ env.EXTRA_ENV_FILE }}"
+
+      - name: Install ansible
+        shell: bash
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
+      - name: Run Ansible Playbook
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        env: 
+          SSH_KEY_PATH: ./${{ secrets.SSH_KEY_NAME }}
+        run: |
+          ansible-playbook deploy-main.yml \
+          -i inventory.yml \
+          --extra-vars "@${{ env.IPS_ENV_FILE }}" \
+          --extra-vars "@${{ env.EXTRA_ENV_FILE }}"
+      
