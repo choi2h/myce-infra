@@ -1,7 +1,7 @@
 name: Deploy all modules
 
 concurrency:
-  group: terraform-main
+  group: deploy-main
   cancel-in-progress: true
 
 on:
