@@ -98,7 +98,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           echo "${{ secrets.AWS_PEM_FILE }}" > ${{ secrets.SSH_KEY_NAME }}
-          chmod 600 ${{ secrets.SSH_KEY_NAME }}
+          chmod 400 ${{ secrets.SSH_KEY_NAME }}
 
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -110,7 +110,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           cat <<EOF > "${{ env.EXTRA_ENV_FILE }}"
-          SSH_KEY_PATH: "${{ github.workspace }}/ansible/${{ secrets.SSH_KEY_NAME }}"
+          SSH_KEY_PATH: '${{ github.workspace }}/ansible/${{ secrets.SSH_KEY_NAME }}'
           IMAGE_NAME: '${{ secrets.DOCKER_IMAGE_NAME }}'
           APP_PORT: '${{ vars.APP_PORT }}'
           DOCKER_USERNAME: '${{ vars.DOCKER_USERNAME }}'
