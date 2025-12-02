@@ -16,6 +16,7 @@ jobs:
       WORKING_DIRECTORY: ./ansible
       IPS_ENV_FILE: dev-env.yml
       EXTRA_ENV_FILE: extra-env.yml
+      DEV_ENV_FILE: ./templates/dev.env
 
     steps:
       - name: Checkout
@@ -52,6 +53,16 @@ jobs:
 
           echo "===== ${{ env.EXTRA_ENV_FILE }} ====="
           cat "${{ env.EXTRA_ENV_FILE }}"
+
+      - name: Create dev-env file
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          cat <<EOF > "{{ env.DEV_ENV_FILE }}"
+          ${{ secrets.MYCE_ENV_FILE }}
+          EOF
+
+          echo "==== ${{ env.DEV_ENV_FILE }} ===="
+          cat "${{ env.DEV_ENV_FILE }}"
 
       - name: Install ansible
         shell: bash
