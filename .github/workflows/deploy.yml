@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure AWS Credentials for Terraform
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -40,7 +40,7 @@ jobs:
           echo "${{ secrets.AWS_PEM_FILE }}" > ${{ secrets.SSH_KEY_NAME }}
           chmod 400 ${{ secrets.SSH_KEY_NAME }}
 
-      - name: Create exra-env file
+      - name: Create extra-env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           cat <<EOF > "${{ env.EXTRA_ENV_FILE }}"
@@ -51,18 +51,12 @@ jobs:
           DOCKER_PASSWORD: '${{ secrets.DOCKER_PASSWORD }}'
           EOF
 
-          echo "===== ${{ env.EXTRA_ENV_FILE }} ====="
-          cat "${{ env.EXTRA_ENV_FILE }}"
-
       - name: Create dev-env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           cat <<EOF > "${{ env.DEV_ENV_FILE }}"
           ${{ secrets.MYCE_ENV_FILE }}
           EOF
-
-          echo "==== ${{ env.DEV_ENV_FILE }} ===="
-          cat "${{ env.DEV_ENV_FILE }}"
 
       - name: Install ansible
         shell: bash
@@ -80,3 +74,10 @@ jobs:
           --extra-vars "@${{ env.IPS_ENV_FILE }}" \
           --extra-vars "@${{ env.EXTRA_ENV_FILE }}"
       
+      - name: Cleanup sensitive files
+        if: always()
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          rm -f ${{ secrets.SSH_KEY_NAME }}
+          rm -f ${{ env.EXTRA_ENV_FILE }}
+          rm -f ${{ env.DEV_ENV_FILE }}
