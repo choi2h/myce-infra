@@ -5,8 +5,8 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  push:
-    branches: [ deploy ]
+  repository_dispatch:
+    types: [ deploy-myce ]
 
 jobs:
   deploy:
