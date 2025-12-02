@@ -129,7 +129,7 @@ jobs:
       - name: Run Ansible Playbook
         working-directory: ${{ env.WORKING_DIRECTORY }}
         env: 
-          SSH_KEY_PATH: ${{ env.WORKING_DIRECTORY }}/${{ secrets.SSH_KEY_NAME }}
+          SSH_KEY_PATH: ./${{ secrets.SSH_KEY_NAME }}
         run: |
           ansible-playbook env-main.yml \
           -i inventory.yml \
