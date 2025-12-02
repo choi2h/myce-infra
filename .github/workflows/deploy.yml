@@ -28,10 +28,10 @@ jobs:
           chmod 400 ${{ secrets.SSH_KEY_NAME }}
 
       - name: Download artifact
-          uses: actions/download-artifact@v4
-          with:
-            name: ansible-env
-            path: ${{ env.WORKING_DIRECTORY }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ansible-env
+          path: ${{ env.WORKING_DIRECTORY }}
 
       - name: Create exra-env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
