@@ -106,7 +106,7 @@ jobs:
       - name: Download dev env file from s3
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
-          aws s3 cp s3://${{ vars.AWS_S3_ARTIFACT_BUCKET_NAME }}/${{ vars.AWS_S3_MYCE_ARTIFACT_PATH }} ${{ env.WORKING_DIRECTORY }}/${{ env.IPS_ENV_FILE }}
+          aws s3 cp s3://${{ vars.AWS_S3_ARTIFACT_BUCKET_NAME }}/${{ vars.AWS_S3_MYCE_ARTIFACT_PATH }} ./${{ env.IPS_ENV_FILE }}
 
       - name: Create extra env file
         working-directory: ${{ env.WORKING_DIRECTORY }}
