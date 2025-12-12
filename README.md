@@ -42,7 +42,9 @@ myce-infra에서는 AWS 기반 프로비저닝을 실행합니다.
   - nftables 기반 NAT 규칙 설정
 - Nat Instance에 NginX 설치 및 설정파일 추가
 - Docker 및 Docker Compose 설치
+
 **배포 작업(deploy)**
 - 백엔드 프로세스 배포
   - .env 설정 및 Docker Image 다운로드
   - Docker Compose 실행
+->  Backend Actions 수행 후 트리거 발생 시 수행
